@@ -6892,6 +6892,18 @@ bool QgisApp::fileSave()
     QgsPythonRunner::run( u"qgis.utils.saveProjectMacro();"_s );
   }
 
+  // check if project was temporarily trusted
+  if(QgsApplication::currentProjectTemporarilyTrusted())
+  {
+    trustStatus = QgsProjectUtils::checkUserTrust( project );
+    if(trustStatus == Qgis::ProjectTrustStatus::Untrusted || trustStatus == Qgis::ProjectTrustStatus::Undetermined)
+    {
+      // TODO: the dialog should have other wording in this case (you have trusted the unsaved project, do you want to trust the saved one (now or forever)?)
+      QgsProjectTrustDialog dialog( project );
+      dialog.exec();
+    }
+  }
+
   return true;
 } // QgisApp::fileSave
 
