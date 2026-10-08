@@ -201,7 +201,6 @@ void QgsProjectTrustDialog::buttonBoxClicked( QAbstractButton *button )
       temporarilyUntrustedProjectsFolders << path;
       accepted = false;
     }
-
     trustedProjectsFolders.sort();
     untrustedProjectsFolders.sort();
     temporarilyTrustedProjectsFolders.sort();
@@ -212,6 +211,21 @@ void QgsProjectTrustDialog::buttonBoxClicked( QAbstractButton *button )
 
     QgsApplication::setTemporarilyTrustedProjectsFolders( temporarilyTrustedProjectsFolders );
     QgsApplication::setTemporarilyUntrustedProjectsFolders( temporarilyUntrustedProjectsFolders );
+  }
+  else
+  {
+    if ( buttonType == QDialogButtonBox::StandardButton::Yes || buttonType == QDialogButtonBox::StandardButton::YesToAll )
+    {
+      accepted = true;
+    }
+    else if ( buttonType == QDialogButtonBox::StandardButton::No || buttonType == QDialogButtonBox::StandardButton::NoToAll )
+    {
+      accepted = false;
+    }
+  }
+  if(accepted)
+  {
+    QgsApplication::setCurrentProjectTemporarilyTrusted();
   }
 
   done( accepted ? QDialog::Accepted : QDialog::Rejected );

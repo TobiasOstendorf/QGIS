@@ -163,6 +163,7 @@ Qgis::ProjectTrustStatus QgsProjectUtils::checkUserTrust( QgsProject *project )
         {
           // Match non-file based URIs too
           absolutePath = project->fileName();
+          // Todo: what about non-file base URIs? Will my changes work with those?
         }
       }
       else
@@ -188,6 +189,11 @@ Qgis::ProjectTrustStatus QgsProjectUtils::checkUserTrust( QgsProject *project )
         {
           return Qgis::ProjectTrustStatus::Trusted;
         }
+      }
+
+      if(QgsApplication::currentProjectTemporarilyTrusted())
+      {
+        return Qgis::ProjectTrustStatus::Trusted;
       }
 
       return Qgis::ProjectTrustStatus::Undetermined;

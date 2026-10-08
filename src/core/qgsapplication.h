@@ -1213,6 +1213,23 @@ class CORE_EXPORT QgsApplication : public QApplication
       const QStringList &trustedProjectsFolders);
 
   /**
+   * Returns whether the current project has been temporarily
+   * determined as trusted by the user.
+   *
+   * \since QGIS 
+   */
+  static bool currentProjectTemporarilyTrusted();
+
+  /**
+   * Sets the current project as temporarily trusted by the user.
+   *
+   * \since QGIS 
+   */
+  static void setCurrentProjectTemporarilyTrusted();
+
+  // is the opposite necessary? temporarily disabled?
+
+  /**
    * Returns the list of projects and folders that have been temporarily
    * determined as untrusted by the user.
    *
@@ -1389,6 +1406,7 @@ private:
 
   QStringList mTemporarilyTrustedProjectFolders;
   QStringList mTemporarilyUntrustedProjectFolders;
+  bool mCurrentProjectTemporarilyTrusted{false};
 
   friend class TestQgsApplication;
 };
