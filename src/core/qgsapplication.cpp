@@ -2137,16 +2137,6 @@ QStringList QgsApplication::temporarilyTrustedProjectsFolders()
   return instance()->mTemporarilyTrustedProjectFolders;
 }
 
-bool QgsApplication::currentProjectTemporarilyTrusted()
-{
-  return instance()->mCurrentProjectTemporarilyTrusted;
-}
-
-void QgsApplication::setCurrentProjectTemporarilyTrusted()
-{
-  instance()->mCurrentProjectTemporarilyTrusted = true;
-}
-
 void QgsApplication::setTemporarilyTrustedProjectsFolders( const QStringList &trustedProjectsFolders )
 {
   instance()->mTemporarilyTrustedProjectFolders = trustedProjectsFolders;
@@ -2160,6 +2150,16 @@ QStringList QgsApplication::temporarilyUntrustedProjectsFolders()
 void QgsApplication::setTemporarilyUntrustedProjectsFolders( const QStringList &untrustedProjectsFolders )
 {
   instance()->mTemporarilyUntrustedProjectFolders = untrustedProjectsFolders;
+}
+
+Qgis::ProjectTrustStatus QgsApplication::currentProjectTemporaryTrustStatus()
+{
+  return instance()->mCurrentProjectTemporaryTrustStatus;
+}
+
+void QgsApplication::setCurrentProjectTemporaryTrustStatus(Qgis::ProjectTrustStatus trustStatus)
+{
+  instance()->mCurrentProjectTemporaryTrustStatus = trustStatus;
 }
 
 int QgsApplication::scaleIconSize( int standardSize, bool applyDevicePixelRatio )

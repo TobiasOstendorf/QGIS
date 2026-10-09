@@ -1213,23 +1213,6 @@ class CORE_EXPORT QgsApplication : public QApplication
       const QStringList &trustedProjectsFolders);
 
   /**
-   * Returns whether the current project has been temporarily
-   * determined as trusted by the user.
-   *
-   * \since QGIS 
-   */
-  static bool currentProjectTemporarilyTrusted();
-
-  /**
-   * Sets the current project as temporarily trusted by the user.
-   *
-   * \since QGIS 
-   */
-  static void setCurrentProjectTemporarilyTrusted();
-
-  // is the opposite necessary? temporarily disabled?
-
-  /**
    * Returns the list of projects and folders that have been temporarily
    * determined as untrusted by the user.
    *
@@ -1245,6 +1228,20 @@ class CORE_EXPORT QgsApplication : public QApplication
    */
   static void setTemporarilyUntrustedProjectsFolders(
       const QStringList &untrustedProjectsFolders);
+
+  /**
+   * Returns the temporary (session based) trust status of the currently open project.
+   *
+   * \since QGIS 
+   */
+  static Qgis::ProjectTrustStatus currentProjectTemporaryTrustStatus();
+
+  /**
+   * Sets the temporary (session based) trust status of the currently open project.
+   *
+   * \since QGIS 
+   */
+  static void setCurrentProjectTemporaryTrustStatus(Qgis::ProjectTrustStatus trustStatus);
 
   /**
    * Scales an icon size to compensate for display pixel density, making the
@@ -1406,7 +1403,7 @@ private:
 
   QStringList mTemporarilyTrustedProjectFolders;
   QStringList mTemporarilyUntrustedProjectFolders;
-  bool mCurrentProjectTemporarilyTrusted{false};
+  Qgis::ProjectTrustStatus mCurrentProjectTemporaryTrustStatus{Qgis::ProjectTrustStatus::Undetermined};
 
   friend class TestQgsApplication;
 };

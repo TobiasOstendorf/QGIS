@@ -6977,7 +6977,6 @@ void QgisApp::fileSaveAs()
   {
     if( previousProjectTrustStatus != Qgis::ProjectTrustStatus::Undetermined )
     {
-      // TODO: the dialog should have other wording in this case (you have trusted the unsaved project, do you want to trust the saved one (now or forever)?)
       QgsProjectTrustDialog dialog( QgsProject::instance(), nullptr, QgsGuiUtils::ModalDialogFlags, QgsProjectTrustDialog::TrustDialogType::AfterSaveToNewLocation );
       dialog.exec();
     }
