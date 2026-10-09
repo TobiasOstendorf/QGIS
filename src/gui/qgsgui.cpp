@@ -423,7 +423,7 @@ bool QgsGui::allowExecutionOfEmbeddedScripts( QgsProject *project, QgsMessageBar
   {
     if( QgsApplication::currentProjectTemporarilyTrusted() )
     {
-      return Qgis::ProjectTrustStatus::Trusted;
+      return true;
     }
     else
     {

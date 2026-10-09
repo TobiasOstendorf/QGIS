@@ -6892,23 +6892,14 @@ bool QgisApp::fileSave()
     QgsPythonRunner::run( u"qgis.utils.saveProjectMacro();"_s );
   }
 
-  // check if project was temporarily trusted
-  if(QgsApplication::currentProjectTemporarilyTrusted())
-  {
-    trustStatus = QgsProjectUtils::checkUserTrust( project );
-    if(trustStatus == Qgis::ProjectTrustStatus::Untrusted || trustStatus == Qgis::ProjectTrustStatus::Undetermined)
-    {
-      // TODO: the dialog should have other wording in this case (you have trusted the unsaved project, do you want to trust the saved one (now or forever)?)
-      QgsProjectTrustDialog dialog( project );
-      dialog.exec();
-    }
-  }
-
   return true;
 } // QgisApp::fileSave
 
 void QgisApp::fileSaveAs()
 {
+  // get current project trust before saving since it depends on filepath
+  previousProjectTrustStatus = QgsProjectUtils::checkUserTrust( QgsProject::instance() );
+
   QString defaultPath;
   QgsSettings settings;
   // First priority is to default to same path as existing file
@@ -6977,6 +6968,25 @@ void QgisApp::fileSaveAs()
     QMessageBox::critical( this, tr( "Unable to save project %1" ).arg( QDir::toNativeSeparators( QgsProject::instance()->fileName() ) ), QgsProject::instance()->error(), QMessageBox::Ok, Qt::NoButton );
   }
   mProjectLastModified = fullPath.lastModified();
+
+  // check if project was temporarily trusted
+  //
+  //switch ( embeddedScriptMode )
+  //{
+  //  case Qgis::EmbeddedScriptMode::Always:
+  //}
+
+  const Qgis::EmbeddedScriptMode embeddedScriptMode = QgsSettingsRegistryCore::settingsCodeExecutionBehaviorUndeterminedProjects->value();
+  if(embeddedScriptMode != Qgis::EmbeddedScriptMode::Always
+    && embeddedScriptMode != Qgis::EmbeddedScriptMode::Never)
+  {
+    if( previousProjectTrustStatus == Qgis::ProjectTrustStatus::Trusted )
+    {
+      // TODO: the dialog should have other wording in this case (you have trusted the unsaved project, do you want to trust the saved one (now or forever)?)
+      QgsProjectTrustDialog dialog( QgsProject::instance() );
+      dialog.exec();
+    }
+  }
 } // QgisApp::fileSaveAs
 
 void QgisApp::dxfExport()

@@ -2137,12 +2137,12 @@ QStringList QgsApplication::temporarilyTrustedProjectsFolders()
   return instance()->mTemporarilyTrustedProjectFolders;
 }
 
-static bool QgsApplication::currentProjectTemporarilyTrusted()
+bool QgsApplication::currentProjectTemporarilyTrusted()
 {
   return instance()->mCurrentProjectTemporarilyTrusted;
 }
 
-static void QgsApplication::setCurrentProjectTemporarilyTrusted()
+void QgsApplication::setCurrentProjectTemporarilyTrusted()
 {
   instance()->mCurrentProjectTemporarilyTrusted = true;
 }
