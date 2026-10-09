@@ -165,14 +165,25 @@ QgsProjectTrustDialog::QgsProjectTrustDialog( QgsProject *project, QWidget *pare
   }
   else
   {
-    bool isUnsavedNewProject = project->filename().isEmpty(); 
+    bool isUnsavedNewProject = project->fileName().isEmpty(); 
+    // ---- testing around ----
+    QDateTime lastSaveDateTime = project->lastSaveDateTime();
+    if(lastSaveDateTime.isNull())
+    {
+      mTitleLabel->setText( tr( "lastSaveDateTime is null" ) ); // TODO: delete
+    }
+    else
+    {
+      mTitleLabel->setText( lastSaveDateTime.toString("dd.MM.yyyy hh:mm:ss") ); // TODO: delete
+    }
+    // ---- testing around ----
     // use filename instead of filepath since filepath will also be empty for non filesystem storage solutions
     // TODO: Is this really the best approach to get the info we need? What about lastSaveDateTime() -> inspect
     if(isUnsavedNewProject)
     {
-      mButtonBox->button( QDialogButtonBox::StandardButton::YesToAll )->disable();
-      mButtonBox->button( QDialogButtonBox::StandardButton::NoToAll )->disable();
-      mProjectDetailsLabel->setText( tr( "The current project is a new and unsaved and can only be trusted for the duration of the session." ) );
+      mButtonBox->button( QDialogButtonBox::StandardButton::YesToAll )->setEnabled(false);
+      mButtonBox->button( QDialogButtonBox::StandardButton::NoToAll )->setEnabled(false);
+      mProjectDetailsLabel->setText( tr( "The current project is new and unsaved and can only be trusted for the duration of the session." ) );
       mTrustProjectFolderCheckBox->setVisible( false );
     }
   }

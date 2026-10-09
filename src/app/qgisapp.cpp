@@ -6971,18 +6971,11 @@ void QgisApp::fileSaveAs()
   }
   mProjectLastModified = fullPath.lastModified();
 
-  // check if project was temporarily trusted
-  //
-  //switch ( embeddedScriptMode )
-  //{
-  //  case Qgis::EmbeddedScriptMode::Always:
-  //}
-
   const Qgis::EmbeddedScriptMode embeddedScriptMode = QgsSettingsRegistryCore::settingsCodeExecutionBehaviorUndeterminedProjects->value();
   if(embeddedScriptMode != Qgis::EmbeddedScriptMode::Always
     && embeddedScriptMode != Qgis::EmbeddedScriptMode::Never)
   {
-    if( previousProjectTrustStatus == Qgis::ProjectTrustStatus::Trusted )
+    if( previousProjectTrustStatus != Qgis::ProjectTrustStatus::Undetermined )
     {
       // TODO: the dialog should have other wording in this case (you have trusted the unsaved project, do you want to trust the saved one (now or forever)?)
       QgsProjectTrustDialog dialog( QgsProject::instance(), nullptr, QgsGuiUtils::ModalDialogFlags, QgsProjectTrustDialog::TrustDialogType::AfterSaveToNewLocation );
