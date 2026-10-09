@@ -35,7 +35,7 @@
 
 using namespace Qt::StringLiterals;
 
-QgsProjectTrustDialog::QgsProjectTrustDialog( QgsProject *project, QWidget *parent, Qt::WindowFlags fl )
+QgsProjectTrustDialog::QgsProjectTrustDialog( QgsProject *project, QWidget *parent, Qt::WindowFlags fl, TrustDialogType trustDialogType )
   : QDialog( parent, fl )
 {
   setupUi( this );
@@ -155,6 +155,26 @@ QgsProjectTrustDialog::QgsProjectTrustDialog( QgsProject *project, QWidget *pare
     newItem->setText( scriptDetails.name() );
     newItem->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
     mScriptPreviewList->addItem( newItem );
+  }
+  
+  if(trustDialogType == TrustDialogType::AfterSaveToNewLocation)
+  {
+    mProjectDetailsLabel->setText( tr( "The current project has been saved to a new location ’%1’." ).arg( u"<b>%1</b>"_s.arg( mProjectAbsoluteFilePath ) ) );
+    mDescriptionLabel->setText( tr( "Do you want to trust this new location for the execution of embedded scripts?" ) );
+    mTitleLabel->setText( tr( "Trust new project location" ) );
+  }
+  else
+  {
+    bool isUnsavedNewProject = project->filename().isEmpty(); 
+    // use filename instead of filepath since filepath will also be empty for non filesystem storage solutions
+    // TODO: Is this really the best approach to get the info we need? What about lastSaveDateTime() -> inspect
+    if(isUnsavedNewProject)
+    {
+      mButtonBox->button( QDialogButtonBox::StandardButton::YesToAll )->disable();
+      mButtonBox->button( QDialogButtonBox::StandardButton::NoToAll )->disable();
+      mProjectDetailsLabel->setText( tr( "The current project is a new and unsaved and can only be trusted for the duration of the session." ) );
+      mTrustProjectFolderCheckBox->setVisible( false );
+    }
   }
 }
 

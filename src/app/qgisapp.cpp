@@ -6900,7 +6900,7 @@ bool QgisApp::fileSave()
 void QgisApp::fileSaveAs()
 {
   // get current project trust before saving since it depends on filepath
-  previousProjectTrustStatus = QgsProjectUtils::checkUserTrust( QgsProject::instance() );
+  Qgis::ProjectTrustStatus previousProjectTrustStatus = QgsProjectUtils::checkUserTrust( QgsProject::instance() );
 
   QString defaultPath;
   QgsSettings settings;
@@ -6985,7 +6985,7 @@ void QgisApp::fileSaveAs()
     if( previousProjectTrustStatus == Qgis::ProjectTrustStatus::Trusted )
     {
       // TODO: the dialog should have other wording in this case (you have trusted the unsaved project, do you want to trust the saved one (now or forever)?)
-      QgsProjectTrustDialog dialog( QgsProject::instance() );
+      QgsProjectTrustDialog dialog( QgsProject::instance(), nullptr, QgsGuiUtils::ModalDialogFlags, QgsProjectTrustDialog::TrustDialogType::AfterSaveToNewLocation );
       dialog.exec();
     }
   }
