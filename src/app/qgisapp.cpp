@@ -14187,6 +14187,8 @@ void QgisApp::closeProject()
 
   if ( !mBlockActiveLayerChanged )
     onActiveLayerChanged( activeLayer() );
+
+  QgsApplication::setCurrentProjectTemporaryTrustStatus(Qgis::ProjectTrustStatus::Undetermined);
 }
 
 void QgisApp::changeEvent( QEvent *event )
