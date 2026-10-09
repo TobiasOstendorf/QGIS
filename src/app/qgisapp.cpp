@@ -492,6 +492,8 @@ using namespace Qt::StringLiterals;
 #include "qgstemporalcontrollerdockwidget.h"
 #include "qgsuserprofilemanager.h"
 #include "qgsuserprofile.h"
+#include "qgsprojectutils.h"
+#include "qgsprojecttrustdialog.h"
 #include "devtools/networklogger/qgsnetworklogger.h"
 #include "devtools/networklogger/qgsnetworkloggerwidgetfactory.h"
 #include "devtools/querylogger/qgsappquerylogger.h"
